@@ -53,4 +53,12 @@ public class Indexer {
         doc.add(new StringField("entities", entities, Field.Store.YES));
         w.addDocument(doc);
     }
+    public static void addCluster(IndexWriter w, String content, String topicId) throws IOException {
+        Document cluster = new Document();
+        cluster.add(new TextField("text", content, Field.Store.YES));
+
+        // use a string field for isbn because we don't want it tokenized
+        cluster.add(new StringField("topicID", topicId, Field.Store.YES));
+        w.addDocument(cluster);
+    }
 }
