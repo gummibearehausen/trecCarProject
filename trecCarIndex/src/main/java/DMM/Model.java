@@ -25,11 +25,15 @@ public class Model{
 	double smallDouble = 1e-150;
 	double largeDouble = 1e150;
 	Map<String, ArrayList<DmmDocument>> topic_clusters;
-
+	Map<String, ArrayList<String>> topic_clusters_text; 
+	ArrayList<DmmDocument> Output_DmmDocuments;
+	// this is for indexing the cluster
 	public Model(int K, int V, int iterNum, double alpha, double beta, 
 			 String ParametersStr)
 	{
 		this.topic_clusters= new HashMap<String, ArrayList<DmmDocument>>();
+		this.topic_clusters_text= new HashMap<String, ArrayList<String>>();
+		this.Output_DmmDocuments= new ArrayList<DmmDocument>();
 		this.ParametersStr = ParametersStr;
 		this.alpha = alpha;
 		this.beta = beta;
@@ -157,19 +161,27 @@ public class Model{
 			DmmDocument para= documentSet.getDmmDocuments().get(d);
 			int topic = z[d];
 			para.topicTag=topic;
-			ArrayList<DmmDocument> docsInCluster = topic_clusters.get(String.valueOf(topic));
+			Output_DmmDocuments.add(para);
+			
 			if (topic_clusters.containsKey(String.valueOf(topic))){
-				
+				ArrayList<DmmDocument> docsInCluster = topic_clusters.get(String.valueOf(topic));
+				ArrayList<String> docsInClusterText = topic_clusters_text.get(String.valueOf(topic));
 				docsInCluster.add(para);
+				docsInClusterText.add(para.getParaText());
 			}else{
 				ArrayList<DmmDocument> topicDocsArray = new ArrayList<DmmDocument>();
+				ArrayList<String> topicDocsTextArray = new ArrayList<String>();
 				topicDocsArray.add(para);
+				topicDocsTextArray.add(para.getParaText());
 				topic_clusters.put((String.valueOf(topic)), topicDocsArray);
+				topic_clusters_text.put((String.valueOf(topic)), topicDocsTextArray);
 			}
 	
 		}
 	}
-	
+	public ArrayList<DmmDocument> getArrayOfDmmDocumentSet(){
+		return Output_DmmDocuments;
+	}
 
 	public Map<String, ArrayList<DmmDocument>> outputClusteringResult(DmmDocumentSet documentSet) throws Exception
 	{    
@@ -181,5 +193,14 @@ public class Model{
 		return topic_clusters;
 	}
  
+	public Map<String, ArrayList<String>> outputClusteringTextResult(DmmDocumentSet documentSet) throws Exception
+	{    
+//         for(String k: topic_clusters.keySet()){
+//        	 System.out.println(k);
+//        	 System.out.println(topic_clusters.get(k));
+//        	 System.out.println();
+//         }
+		return topic_clusters_text;
+	}
 }
 
