@@ -6,9 +6,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
-
-import edu.unh.cs.treccar.Data;
-import edu.unh.cs.treccar.read_data.DeserializeData;
+import treccarData.Data;
+import treccarReadData.DeserializeData;
 
 public class Queries {
 	private String query_file_name;
