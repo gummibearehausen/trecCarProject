@@ -12,10 +12,13 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class EvalReadfile {
+public class EvalReadfileLaura {
+	
+
 	 String data_path;
 	 String data_result;
 	 String data_truth;
+	 String run_file;
 	 static Map<String, Set<String> >truth;
 	 Map<String, ArrayList<String>> ranklistByquery;
 	 ArrayList<Double> aver_eval;
@@ -24,13 +27,13 @@ public class EvalReadfile {
 	 
 	
 //	@SuppressWarnings("static-access")
-	public EvalReadfile(String data_path, String data_truth,Map<String, ArrayList<String>> ranklistByquery,int map_at_k, int pr_at_k) throws NumberFormatException, IOException{
+	public EvalReadfileLaura(String data_path, String data_truth,String runfile,int map_at_k, int pr_at_k) throws NumberFormatException, IOException{
 		this.data_path=data_path;			
 		this.data_truth= data_truth;
-		this.ranklistByquery=ranklistByquery;
+		this.ranklistByquery=ReadSearchResult(runfile);;
 		this.map_at_k=map_at_k;
 		this.pr_at_k=pr_at_k;
-
+		
 		Map<String, Set<String> >groundtruth = new HashMap<String, Set<String>>();
 
 		String filename1 = data_path+data_truth;
@@ -77,18 +80,43 @@ public class EvalReadfile {
 	}
 
 	
-public void printEval(){
-		ArrayList<Double> result=this.aver_eval;
-		System.out.println();
-		System.out.printf("MAP@%d: "+result.get(0),this.map_at_k);
-		System.out.println();
-		System.out.printf("precision at %d: "+result.get(1),this.pr_at_k);
-		System.out.println();
-		System.out.println("precision at R: "+result.get(3));
-		System.out.println("mrr: "+result.get(4));
-	
-}
+	public void printEval(){
+			ArrayList<Double> result=this.aver_eval;
+			System.out.println();
+			System.out.printf("MAP@%d: "+result.get(0),this.map_at_k);
+			System.out.println();
+			System.out.printf("precision at %d: "+result.get(1),this.pr_at_k);
+			System.out.println();
+			System.out.println("precision at R: "+result.get(3));
+			System.out.println("mrr: "+result.get(4));
+		
+	}
+
 
 	
-
+  public static Map<String, ArrayList<String>> ReadSearchResult(String WriteFileName) throws IOException{
+	  Map<String, ArrayList<String>>rankDocListQuies= new HashMap<String, ArrayList<String>>();
+	  String WriteFileDirRead ="tempSearchResult/";
+	  InputStream is = new FileInputStream(new File(WriteFileDirRead+WriteFileName));
+		BufferedReader bufferReading = new BufferedReader(new InputStreamReader(is));
+		String line;
+		while ((line =bufferReading.readLine()) != null){		
+//				System.out.println(line);
+			String[] ParsedLine= line.trim().split("\t");
+//				System.out.println(ParsedLine);
+			String queryId = ParsedLine[0];
+			int doc_rank = Integer.valueOf(ParsedLine[1]);
+			String passage_id = ParsedLine[2];
+			if(rankDocListQuies.containsKey(queryId)){
+				rankDocListQuies.get(queryId).add(passage_id);					
+			}else{
+				ArrayList<String> docIds = new ArrayList<String>();
+				docIds.add(passage_id);
+				rankDocListQuies.put(queryId, docIds);
+			}
+			
+		}	  
+		bufferReading.close();
+		return rankDocListQuies;
+  }
 }

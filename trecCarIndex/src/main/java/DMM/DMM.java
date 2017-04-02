@@ -65,12 +65,12 @@ public class DMM
 		model.intialize(documentSet);
 		model.gibbsSampling(documentSet);
 		model.output(documentSet);
-		topic_clusters = model.topic_clusters;
+		this.topic_clusters = model.topic_clusters;
 		showTopicModelingResult(topic_clusters);
 		
 	}
    public Map<String, ArrayList<DmmDocument>> getTopicCluster(){
-	   return topic_clusters;
+	   return this.topic_clusters;
    }
    public void showTopicModelingResult(Map<String, ArrayList<DmmDocument>> topic_clusters ){
 	   int topic_reassign_id=1;
