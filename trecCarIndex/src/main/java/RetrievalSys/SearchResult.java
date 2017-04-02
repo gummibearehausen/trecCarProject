@@ -40,8 +40,9 @@ public class SearchResult {
 	public void ClusteringResult() throws Exception{
 		String tempIndexPath = "tempIndexFile/";
 		DMM dmm = new DMM(5,0.1,0.1,5, RankLuceneDoc);
-		dmm.getTopicModeling();
-		
+		dmm.getDocuments();
+		dmm.runGSDMM();
+		System.out.print(dmm.getTopicCluster());
 		
 //		Map<String, ArrayList<DmmDocument>> topic_clusters =dmm.getTopicCluster();
 //		for(String k: topic_clusters.keySet()){
