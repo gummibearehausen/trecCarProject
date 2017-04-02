@@ -26,25 +26,30 @@ public class Metrics {
 		this.result = metric_methods(query,map_k, pr_k);
 		this.map_k = map_k;
 		this.pr_k =pr_k;  
-		this.num_rel_ret =0;
-		
+		this.num_rel_ret =0;	
 	}
 	
 	public  ArrayList<Double> metric_methods(String query, int map_k,int pr_k){
 		ArrayList<Double> eval = new ArrayList<Double>();
 		
 		double MAP_a_q=0.0;
+		double MRR_a_q=0.0;
 		double precisionAtX=0.0;
 		double recallAtX=0.0;
 		double precisionAtR=0.0;
 
 		Set<String> truth_rel = truth.get(query);
 		int num_of_true =  truth_rel.size();	
+
 		int num_rel_retr = 0;
 		for (int rank=0; rank< ranklist.size();rank++){	
 			String docId= ranklist.get(rank);
 			if(truth_rel.contains(docId)){
 				num_rel_retr+=1;
+				if(MRR_a_q==0.0){
+					MRR_a_q+=1.0/(rank+1);
+//					System.out.println("rank"+rank);
+				}
 				if(rank+1<=map_k){
 					MAP_a_q += (double)num_rel_retr/(1+rank);
 					}
@@ -65,7 +70,7 @@ public class Metrics {
 		}
 		eval.add(recallAtX/num_of_true);
 		eval.add(precisionAtR/num_of_true);
-		
+		eval.add(MRR_a_q);
 		return eval;
 	}
 	
