@@ -1,21 +1,18 @@
 package RetrievalSys;
 
-import java.io.BufferedReader;
+
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
-import org.apache.lucene.document.Document;
+
 import org.apache.lucene.index.DirectoryReader;
 
-import org.apache.lucene.queryparser.classic.ParseException;
+
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
@@ -27,12 +24,24 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
 import Evaluation.*;
-import treccarData.Data;
-import treccarReadData.DeserializeData;
 
-public class B_Searcher {
+
+public class Searcher {
+//	private Directory directory;
+//	private DirectoryReader reader;
+//	private IndexSearcher searcher;
+//	private String IndexPath;
+//  
+//  public Searcher(String IndexPath) throws IOException{
+//	  this.IndexPath= IndexPath;
+//	  this.directory=FSDirectory.open(new File (IndexPath));
+//	  this.reader=DirectoryReader.open(directory);
+//	  this.searcher=new IndexSearcher(reader);
+//  }
+  
 	
-  public static void searchEngine(Queries queries, String eval_f_name, String IndexPath, int hitsPerPage, String eval_file_dir) throws IOException, ParseException{
+	
+  public static void searchEngine(Queries queries, String eval_f_name, String IndexPath, int hitsPerPage, String eval_file_dir) throws Exception{
 	  
 
 	  
@@ -51,7 +60,7 @@ public class B_Searcher {
 //      	searcher.setSimilarity(new BM25Similarity());
       	searcher.setSimilarity(new BM25Similarity());
       }else if(modelNum ==2){
-      	B_MySimilarity similarity = new B_MySimilarity(new DefaultSimilarity());
+      	MySimilarity similarity = new MySimilarity(new DefaultSimilarity());
         searcher.setSimilarity(similarity);
     }
 	  Map<String, ArrayList<String>> ranklistByquery = new HashMap<String, ArrayList<String>>();
@@ -66,27 +75,16 @@ public class B_Searcher {
         // 4. display results
         System.out.printf("\nquery: %s \n",s.getQueryText());
         System.out.println("Found " + hits.length + " hits.");
-        for(int i=0;i<hits.length;++i) {
-            int docId = hits[i].doc;
-            Document d = searcher.doc(docId);
-            System.out.println((i + 1) + ". "+ hits[i]+" "+ d.get("text"));
-            
-            String paraId= d.get("paraID");
-			if(ranklistByquery.containsKey(queryId)){
-				ranklistByquery.get(queryId).add(paraId);
-			}else{
-				ArrayList<String> ranklist= new ArrayList<String>();
-				ranklist.add(paraId);
-				ranklistByquery.put(queryId, ranklist);
-			}
-        }
         
+        SearchResult result = new SearchResult(hits,searcher) ;
         
- 
-
-      	
+        ArrayList<String> ranklist =result.getRankDocId();
+        
+        ranklistByquery.put(queryId, ranklist);
+        result.ClusteringResult();
+             	
       }
-    	
+    	//evaluation
     	EvalReadfile result = new EvalReadfile(eval_file_dir,eval_f_name,ranklistByquery);
     	result.printEval();
       

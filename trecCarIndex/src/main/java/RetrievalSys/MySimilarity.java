@@ -12,9 +12,9 @@ import org.apache.lucene.search.TermStatistics;
 import org.apache.lucene.search.similarities.Similarity;
 import org.apache.lucene.util.BytesRef;
 
-public class B_MySimilarity extends Similarity {
+public class MySimilarity extends Similarity {
     private Similarity sim = null;
-    public B_MySimilarity(Similarity sim) {
+    public MySimilarity(Similarity sim) {
       this.sim = sim;
     }
     @Override
