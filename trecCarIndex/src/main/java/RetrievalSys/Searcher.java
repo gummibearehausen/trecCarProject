@@ -125,7 +125,7 @@ public class Searcher {
         }
         //evaluation
 
-        int laura=1;
+        int laura=2;
         if(laura==1){
             EvalReadfile result = new EvalReadfile(eval_file_dir,eval_f_name,ranklistByquery,MAP_at_k,PR_at_k);
             EvalReadfile result2 = new EvalReadfile(eval_file_dir,eval_f_name,ranklistByquery2,MAP_at_k,PR_at_k);
