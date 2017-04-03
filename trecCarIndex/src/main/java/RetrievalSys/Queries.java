@@ -9,6 +9,11 @@ import java.util.ArrayList;
 import treccarData.Data;
 import treccarReadData.DeserializeData;
 
+
+/**
+ * Queries.java - reads queries from the outlinefile.
+ */
+
 public class Queries {
 
 	private String query_file_name;

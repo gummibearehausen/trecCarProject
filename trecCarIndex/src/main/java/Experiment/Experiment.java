@@ -3,21 +3,32 @@ package Experiment;
 import RetrievalSys.*;
 import java.io.File;
 
+/**
+ * Experiment.java - the main class of prototype 2
+ *                  this prototype is working with two methods: 1 - baseline:  BM25
+ *                  2 -  Cluster Re-ranking
+ */
+
 public class Experiment {
+    /**
+     * run mode 1 uses sprtzer dataset
+     * run mode 2 uses test200
+     * run mode 3 uses users argument
+     */
     static int runmodel=3;
     public static void main(String[] args) throws Exception{
 
 
 
-        if ( args.length != 3 ) {
+        if ( args.length != 4 ) {
             System.err.println("Required params: <paragraph> <outlines> <qrels> <output>");
             return;
         }
 
-
         File paragraphFile = new File( args[0]);
         File outlineFile = new File( args[1]);
         File qrelsFile = new File( args[2]);
+        File runfile = new File( args[3] );
 
         int MeanPrecision_at_k=1000;
         int Precision_at_k=1000;
@@ -40,23 +51,13 @@ public class Experiment {
             String indexPath2 ="F:/WikiIndexFile/";
             Queries Q2= new Queries(outline_name2,file_dir2);
             Searcher.searchEngine(Q2, qrel_name2,indexPath2,hitsPerPage,file_dir2,MeanPrecision_at_k,Precision_at_k,lambda);
-        }else{
+        } else {
 
-            String file_dir ="spritzer-v1/";
-            String para_file_name= "spritzer.cbor.paragraphs";
+            String file_dir = qrelsFile.getParent();
             String indexPath = "indexfile/";
-//            Indexer.indexParas(file_dir+para_file_name,indexPath);
             Indexer.indexParas(paragraphFile,indexPath);
-//            String outline_name= "spritzer.cbor.outlines";
-            String qrel_name = "spritzer.cbor.article.qrels";
-
-            String runfile= "";
-//            Queries Q = new Queries(outline_name,file_dir);
             Queries Q = new Queries(outlineFile);
-//            Searcher.searchEngine(Q, qrel_name,indexPath,hitsPerPage,file_dir,MeanPrecision_at_k,Precision_at_k,lambda);
-            Searcher.searchEngine(Q, qrelsFile , indexPath,hitsPerPage,file_dir,MeanPrecision_at_k,Precision_at_k,lambda);
+            Searcher.searchEngine(Q, qrelsFile, runfile , indexPath, hitsPerPage, file_dir,MeanPrecision_at_k,Precision_at_k,lambda);
         }
     }
-
-
 }

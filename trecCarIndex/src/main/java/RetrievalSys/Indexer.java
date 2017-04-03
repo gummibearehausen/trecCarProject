@@ -24,6 +24,10 @@ import co.nstant.in.cbor.CborException;
 import treccarData.Data;
 import treccarReadData.DeserializeData;
 
+/**
+ * Indexer.java -  collects, parses, and stores data in index path to facilitate fast and accurate information retrieval.
+ */
+
 public class Indexer {
 
 

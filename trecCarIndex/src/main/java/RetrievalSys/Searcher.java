@@ -29,6 +29,9 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
 import Evaluation.*;
+/**
+ *  Searcher.java -
+ */
 
 
 public class Searcher {
@@ -47,15 +50,13 @@ public class Searcher {
         this.hitsPerPage=hitsPerPage;
 
     }
-    //
+
     public void general_searcher() throws IOException, ParseException{
         Analyzer analyzer = new StandardAnalyzer();
 
         int modelNum = 2;
-//      Query q = new QueryParser("Content", analyzer).parse(querystr);
 
         // 3. search
-
 
         Directory directory = FSDirectory.open(new File (IndexPath));
         DirectoryReader reader = DirectoryReader.open(directory);
@@ -80,7 +81,6 @@ public class Searcher {
     public static void searchEngine(Queries queries, String eval_f_name, String IndexPath, int engine_hitsPerPage, String eval_file_dir,int MAP_at_k, int PR_at_k, double lambda) throws Exception{
 
 
-
         Analyzer engine_analyzer = new StandardAnalyzer();
 
         int engine_modelNum = 2;
@@ -93,7 +93,6 @@ public class Searcher {
         DirectoryReader engine_reader = DirectoryReader.open(engine_directory);
         IndexSearcher searcher = new IndexSearcher(engine_reader);
         if(engine_modelNum == 2){
-//      	searcher.setSimilarity(new BM25Similarity());
             searcher.setSimilarity(new BM25Similarity());
         }else if(engine_modelNum ==1){
             MySimilarity similarity = new MySimilarity(new DefaultSimilarity());
@@ -137,7 +136,7 @@ public class Searcher {
             System.out.println("retrieval Cluster Ranking: ");
             result2.printEval();
         }else{
-            EvalReadfileLaura result = new EvalReadfileLaura(eval_file_dir,eval_f_name,"runfile_tempResultBM25",MAP_at_k,PR_at_k);
+            EvalReadfileLaura result = new EvalReadfileLaura(eval_file_dir,eval_f_name,"runfile_tempResultBM25" ,MAP_at_k,PR_at_k);
             EvalReadfileLaura result2 = new EvalReadfileLaura(eval_file_dir,eval_f_name,"runfile_clusterRanking",MAP_at_k,PR_at_k);
 
             System.out.println("retrieval result of BM25 ( k1 = 1.2, b = 0.75):");
@@ -151,7 +150,7 @@ public class Searcher {
         // is no need to access the documents any more.
         engine_reader.close();
     }
-    public static void searchEngine(Queries queries, File qrels, String IndexPath, int engine_hitsPerPage, String eval_file_dir,int MAP_at_k, int PR_at_k, double lambda) throws Exception{
+    public static void searchEngine(Queries queries, File qrels, File searchResultFile, String IndexPath, int engine_hitsPerPage, String eval_file_dir,int MAP_at_k, int PR_at_k, double lambda) throws Exception{
 
 
 
@@ -167,7 +166,6 @@ public class Searcher {
         DirectoryReader engine_reader = DirectoryReader.open(engine_directory);
         IndexSearcher searcher = new IndexSearcher(engine_reader);
         if(engine_modelNum == 2){
-//      	searcher.setSimilarity(new BM25Similarity());
             searcher.setSimilarity(new BM25Similarity());
         }else if(engine_modelNum ==1){
             MySimilarity similarity = new MySimilarity(new DefaultSimilarity());
@@ -197,6 +195,7 @@ public class Searcher {
 
             ranklistByquery2.put(queryId, ranklist2);
             WriteSearchResultIntoFile(ranklistByquery2,"runfile_clusterRanking");
+            WriteSearchResultIntoFile(ranklistByquery2, searchResultFile);
         }
         //evaluation
 
@@ -241,23 +240,34 @@ public class Searcher {
         writer.close();
     }
 
+    public static void WriteSearchResultIntoFile(Map<String, ArrayList<String>> DocRanklistQueries, File WriteFileName) throws IOException{
+        BufferedWriter writer = new BufferedWriter( new FileWriter( WriteFileName.getPath()));
+        for(String QueryAskey:DocRanklistQueries.keySet()){
+            ArrayList<String> DocRankIdPerQuery = DocRanklistQueries.get(QueryAskey);
+            int docRank=1;
+            for(String DocParaId:DocRankIdPerQuery){
+                String WriteString =QueryAskey+"\t"+0+"\t"+DocParaId +"\t"+docRank+"\t"+1.0/docRank+"\t"+"BBTeam"+"\n";
+                docRank+=1;
+                writer.write( WriteString);
+            }
+        }
+        writer.close();
+    }
 
-    public static Map<String, ArrayList<String>> ReadSearchResult(String WriteFileName) throws IOException{
-        Map<String, ArrayList<String>>rankDocListQuies= new HashMap<String, ArrayList<String>>();
-        String WriteFileDirRead ="tempSearchResult/";
-        InputStream is = new FileInputStream(new File(WriteFileDirRead+WriteFileName));
+    public static Map<String, ArrayList<String>> ReadSearchResult(String WriteFileName) throws IOException {
+        Map<String, ArrayList<String>> rankDocListQuies = new HashMap<String, ArrayList<String>>();
+        String WriteFileDirRead = "tempSearchResult/";
+        InputStream is = new FileInputStream(new File(WriteFileDirRead + WriteFileName));
         BufferedReader bufferReading = new BufferedReader(new InputStreamReader(is));
         String line;
-        while ((line =bufferReading.readLine()) != null){
-//				System.out.println(line);
-            String[] ParsedLine= line.trim().split("\t");
-//				System.out.println(ParsedLine);
+        while ((line = bufferReading.readLine()) != null) {
+            String[] ParsedLine = line.trim().split("\t");
             String queryId = ParsedLine[0];
             int doc_rank = Integer.valueOf(ParsedLine[1]);
             String passage_id = ParsedLine[2];
-            if(rankDocListQuies.containsKey(queryId)){
+            if (rankDocListQuies.containsKey(queryId)) {
                 rankDocListQuies.get(queryId).add(passage_id);
-            }else{
+            } else {
                 ArrayList<String> docIds = new ArrayList<String>();
                 docIds.add(passage_id);
                 rankDocListQuies.put(queryId, docIds);
@@ -267,8 +277,4 @@ public class Searcher {
         bufferReading.close();
         return rankDocListQuies;
     }
-
-
-
-
 }
