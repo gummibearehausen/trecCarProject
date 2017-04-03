@@ -7,8 +7,11 @@ The code is written in Java as a Maven project. The user required to compile the
 #### After cloning the repository:
 
 $ cd trecCarIndex
+
 $ mvn package assembly:single
-$ java -jar ./target/treccar-archecture-framework-1.4-jar-with-dependencies.jar  <paragraph> <outlines> <qrels> <output>
+
+$ java -jar ./target/treccar-archecture-framework-1.4-jar-with-dependencies.jar  *<paragraph>* *<outlines>* *<qrels>* *<output>*:x
+
 
 This command index the paragraphs and save them in a local directory:  *indexfile*
 
