@@ -21,10 +21,11 @@ public class EvalReadfile {
 	ArrayList<Double> aver_eval;
 	int map_at_k;
 	int pr_at_k;
+	InputStream is;
 
 
 	//	@SuppressWarnings("static-access")
-	public EvalReadfile(String data_path, String data_truth,Map<String, ArrayList<String>> ranklistByquery,int map_at_k, int pr_at_k) throws NumberFormatException, IOException{
+	public EvalReadfile(String data_path, String data_truth,Map<String, ArrayList<String>> ranklistByquery,int map_at_k, int pr_at_k) throws NumberFormatException, IOException {
 		this.data_path=data_path;
 		this.data_truth= data_truth;
 		this.ranklistByquery=ranklistByquery;
@@ -34,12 +35,29 @@ public class EvalReadfile {
 
 
 		String groundTruth = data_path+data_truth;
-		String line;
-		InputStream is = new FileInputStream(new File(groundTruth));
-		BufferedReader br = new BufferedReader(new InputStreamReader(is));
-        Map<String, Set<String> >groundtruth = new HashMap<String, Set<String>>();
+		is = new FileInputStream(new File(groundTruth));
+		readFile();
+	}
 
-		while ((line =br.readLine()) != null){
+    public EvalReadfile(String data_path, File truthFile, Map<String, ArrayList<String>> ranklistByquery,int map_at_k, int pr_at_k) throws NumberFormatException, IOException {
+        this.data_path=data_path;
+        this.data_truth= data_truth;
+        this.ranklistByquery=ranklistByquery;
+        this.map_at_k=map_at_k;
+        this.pr_at_k=pr_at_k;
+
+
+
+//        String groundTruth = data_path+data_truth;
+        is = new FileInputStream(truthFile);
+        readFile();
+    }
+
+	private void readFile() throws NumberFormatException, IOException {
+		String line;
+		BufferedReader br = new BufferedReader(new InputStreamReader(is));
+		Map<String, Set<String> >groundtruth = new HashMap<String, Set<String>>();
+		while ((line = br.readLine()) != null){
 			String[] parsedLine = line.split(" ");
 			String sectionId = parsedLine[0];
 			String docId = parsedLine[2];
@@ -51,7 +69,6 @@ public class EvalReadfile {
 				trueDocId.add(docId);
 				groundtruth.put(sectionId, trueDocId);}
 		}
-
 
 		br.close();
 		ArrayList<Double>ave_eval = new ArrayList<Double>();
@@ -75,11 +92,8 @@ public class EvalReadfile {
 
 		}
 		this.aver_eval= ave_eval;
-	}
 
-//	private void readFile(){
-//
-//	}
+	}
 
 
 	public void printEval(){

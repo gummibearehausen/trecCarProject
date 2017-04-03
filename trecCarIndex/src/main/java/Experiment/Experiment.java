@@ -9,7 +9,7 @@ public class Experiment {
 
 
 
-        if ( args.length != 2 ) {
+        if ( args.length != 3 ) {
             System.err.println("Required params: <paragraph> <outlines> <qrels> <output>");
             return;
         }
@@ -17,6 +17,7 @@ public class Experiment {
 
         File paragraphFile = new File( args[0]);
         File outlineFile = new File( args[1]);
+        File qrelsFile = new File( args[2]);
 
         int MeanPrecision_at_k=1000;
         int Precision_at_k=1000;
@@ -52,7 +53,8 @@ public class Experiment {
             String runfile= "";
 //            Queries Q = new Queries(outline_name,file_dir);
             Queries Q = new Queries(outlineFile);
-            Searcher.searchEngine(Q, qrel_name,indexPath,hitsPerPage,file_dir,MeanPrecision_at_k,Precision_at_k,lambda);
+//            Searcher.searchEngine(Q, qrel_name,indexPath,hitsPerPage,file_dir,MeanPrecision_at_k,Precision_at_k,lambda);
+            Searcher.searchEngine(Q, qrelsFile , indexPath,hitsPerPage,file_dir,MeanPrecision_at_k,Precision_at_k,lambda);
         }
     }
 
