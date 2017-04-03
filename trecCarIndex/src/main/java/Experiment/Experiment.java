@@ -3,6 +3,7 @@ package Experiment;
 import RetrievalSys.*;
 import java.io.File;
 
+
 /**
  * Experiment.java - the main class of prototype 2
  *                  this prototype is working with two methods: 1 - baseline:  BM25
@@ -51,8 +52,22 @@ public class Experiment {
             String indexPath2 ="F:/WikiIndexFile/";
             Queries Q2= new Queries(outline_name2,file_dir2);
             Searcher.searchEngine(Q2, qrel_name2,indexPath2,hitsPerPage,file_dir2,MeanPrecision_at_k,Precision_at_k,lambda);
-        } else {
+        } else if ( runmodel == 3 ) {
 
+            String file_dir = qrelsFile.getParent();
+            String indexPath = "indexfile/";
+            Indexer.indexParas(paragraphFile,indexPath);
+            Queries Q = new Queries(outlineFile);
+            Searcher.searchEngine(Q, qrelsFile, runfile , indexPath, hitsPerPage, file_dir,MeanPrecision_at_k,Precision_at_k,lambda);
+        }  else if ( runmodel == 4 ) {
+            SySQuery.WORDNET_EXPAND_QUERY = true;
+            String file_dir = qrelsFile.getParent();
+            String indexPath = "indexfile/";
+            Indexer.indexParas(paragraphFile,indexPath);
+            Queries Q = new Queries(outlineFile);
+            Searcher.searchEngine(Q, qrelsFile, runfile , indexPath, hitsPerPage, file_dir,MeanPrecision_at_k,Precision_at_k,lambda);
+        } else {
+            SySQuery.KB_EXPAND_QUERY = true;
             String file_dir = qrelsFile.getParent();
             String indexPath = "indexfile/";
             Indexer.indexParas(paragraphFile,indexPath);
