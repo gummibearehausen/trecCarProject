@@ -1,6 +1,6 @@
 ## TREC Car - Data Science Code Submission 3
-## CLuster-ranking Method:
 **submission URL:** [Link] (https://github.com/gummibearehausen/trecCarProject.git)
+## Cluster-ranking Method:
 
 The code is written in Java as a Maven project. The user required to compile the project the command:
 
