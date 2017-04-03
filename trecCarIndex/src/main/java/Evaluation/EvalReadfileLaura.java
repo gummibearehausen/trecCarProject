@@ -155,7 +155,7 @@ public class EvalReadfileLaura {
 			String[] ParsedLine= line.trim().split("\t");
 //				System.out.println(ParsedLine);
 			String queryId = ParsedLine[0];
-			int doc_rank = Integer.valueOf(ParsedLine[1]);
+			int doc_rank = Integer.valueOf(ParsedLine[3]);
 			String passage_id = ParsedLine[2];
 			if(rankDocListQuies.containsKey(queryId)){
 				rankDocListQuies.get(queryId).add(passage_id);					
