@@ -3,7 +3,8 @@ package RetrievalSys;
 
 
 import java.io.File;
-
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 
@@ -18,6 +19,10 @@ import org.apache.lucene.index.IndexWriterConfig;
 
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
+
+import co.nstant.in.cbor.CborException;
+import treccarData.Data;
+import treccarReadData.DeserializeData;
 
 public class Indexer {
 
@@ -60,5 +65,18 @@ public class Indexer {
         // use a string field for isbn because we don't want it tokenized
         cluster.add(new StringField("topicID", topicId, Field.Store.YES));
         w.addDocument(cluster);
+    }
+    public static  void indexParas(String paragraphs,String indexPath) throws CborException, IOException{
+    	IndexWriter index_writer =indexWriterCreator( indexPath,0);
+        final FileInputStream fileInputStream2 = new FileInputStream(new File(paragraphs));
+        for(Data.Paragraph p: DeserializeData.iterableParagraphs(fileInputStream2)) {
+        	String index_paraId = p.getParaId();
+        	String index_paraText = p.getTextOnly();
+        	String index_entities=String.join("\t", p.getEntitiesOnly());
+        	addDoc(index_writer,index_paraText,index_paraId,index_entities);
+        	System.out.println("Indexing: "+index_paraId);
+
+        }
+        index_writer.close();
     }
 }
