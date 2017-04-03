@@ -10,7 +10,7 @@ $ cd trecCarIndex
 
 $ mvn package assembly:single
 
-$ java -jar ./target/treccar-archecture-framework-1.4-jar-with-dependencies.jar  *paragraph* *outlines* *qrels* *output*
+$ java -jar ./target/treccar-archecture-framework-1.4-jar-with-dependencies.jar  *paragraph_DIR* *outlines_DIR* *qrels_DIR* *output_DIR*
 
 
 This command index the paragraphs and save them in a local directory:  *indexfile*
