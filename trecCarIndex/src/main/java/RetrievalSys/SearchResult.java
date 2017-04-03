@@ -38,7 +38,7 @@ public class SearchResult {
 	private Map<String,Integer> RankCluster;
 	private double lambda;
 	public SearchResult(String Q_text, ScoreDoc[] hits, IndexSearcher searcher, double lambda) throws IOException{
-		this.Query_text=Q_text;
+		this.Query_text = Q_text;
 		this.DocHits = hits;
 		this.DocSearcher = searcher;
 		this.RankDocId = new ArrayList<String>();
@@ -54,7 +54,6 @@ public class SearchResult {
         for(int i=0;i<DocHits.length;++i) {     	
             int docId = DocHits[i].doc;
             Document d = DocSearcher.doc(docId);
-//            System.out.println((i + 1) + ". "+ DocHits[i]+" "+ d.get("text"));           
             String paraId= d.get("paraID");
             RankDocId.add(paraId);         
             RankLuceneDoc.add(d);
@@ -72,11 +71,8 @@ public class SearchResult {
 	public void ClusteringResult() throws Exception{
 		String tempIndexPath = "indexcluster/";
 		DMM dmm = new DMM(15,0.1,0.1,20, RankLuceneDoc);
-//		long startTime = System.currentTimeMillis();	
 		dmm.getDocuments();
-//		long endTime = System.currentTimeMillis();
-//		System.out.println("getDocuments Time Used:" + (endTime-startTime)/1000.0 + "s");
-//		startTime = System.currentTimeMillis();	
+
 		dmm.runGSDMM();
 //		endTime = System.currentTimeMillis();
 //		System.out.println("gibbsSampling Time Used:" + (endTime-startTime)/1000.0 + "s");

@@ -74,7 +74,6 @@ public class EvalReadfileLaura {
 					}
 		for(int j = 0; j< ave_eval.size(); j++){
 			ave_eval.set(j, ave_eval.get(j)/num_of_query);
-			
 		}
 		this.aver_eval= ave_eval;
 	}

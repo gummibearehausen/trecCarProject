@@ -26,28 +26,28 @@ import treccarReadData.DeserializeData;
 
 public class Indexer {
 
-	
-	
 
-	public static IndexWriter indexWriterCreator(String indexPath, int create_or_append) throws IOException{
-		
-    	Analyzer analyzer = new StandardAnalyzer();
-    	
+
+
+    public static IndexWriter indexWriterCreator(String indexPath, int create_or_append) throws IOException{
+
+        Analyzer analyzer = new StandardAnalyzer();
+
         // 1. create the index
-    	
+
         FSDirectory directory = FSDirectory.open(new File(indexPath));
 
         IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_4_10_1, analyzer);
         if (create_or_append ==0){config.setOpenMode(IndexWriterConfig.OpenMode.CREATE);}else{
-        	config.setOpenMode(IndexWriterConfig.OpenMode.CREATE_OR_APPEND);}
+            config.setOpenMode(IndexWriterConfig.OpenMode.CREATE_OR_APPEND);}
         config.setRAMBufferSizeMB(64);
         config.setMaxBufferedDocs(4000);
         IndexWriter w = new IndexWriter(directory, config);
         return w;
-        
-	}
 
-    
+    }
+
+
 
     public static void addDoc(IndexWriter w, String content, String paraId, String entities) throws IOException {
         Document doc = new Document();
@@ -67,15 +67,27 @@ public class Indexer {
         w.addDocument(cluster);
     }
     public static  void indexParas(String paragraphs,String indexPath) throws CborException, IOException{
-    	IndexWriter index_writer =indexWriterCreator( indexPath,0);
+        IndexWriter index_writer =indexWriterCreator( indexPath,0);
         final FileInputStream fileInputStream2 = new FileInputStream(new File(paragraphs));
         for(Data.Paragraph p: DeserializeData.iterableParagraphs(fileInputStream2)) {
-        	String index_paraId = p.getParaId();
-        	String index_paraText = p.getTextOnly();
-        	String index_entities=String.join("\t", p.getEntitiesOnly());
-        	addDoc(index_writer,index_paraText,index_paraId,index_entities);
-        	System.out.println("Indexing: "+index_paraId);
+            String index_paraId = p.getParaId();
+            String index_paraText = p.getTextOnly();
+            String index_entities=String.join("\t", p.getEntitiesOnly());
+            addDoc(index_writer,index_paraText,index_paraId,index_entities);
+            System.out.println("Indexing: "+index_paraId);
+        }
+        index_writer.close();
+    }
 
+    public static  void indexParas(File paragraphsFile , String indexPath) throws CborException, IOException{
+        IndexWriter index_writer =indexWriterCreator( indexPath,0);
+        final FileInputStream fileInputStream2 = new FileInputStream(paragraphsFile);
+        for(Data.Paragraph p: DeserializeData.iterableParagraphs(fileInputStream2)) {
+            String index_paraId = p.getParaId();
+            String index_paraText = p.getTextOnly();
+            String index_entities=String.join("\t", p.getEntitiesOnly());
+            addDoc(index_writer,index_paraText,index_paraId,index_entities);
+            System.out.println("Indexing: " + index_paraId);
         }
         index_writer.close();
     }
