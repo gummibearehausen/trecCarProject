@@ -261,7 +261,7 @@ public class Searcher {
         BufferedReader bufferReading = new BufferedReader(new InputStreamReader(is));
         String line;
         while ((line = bufferReading.readLine()) != null) {
-            String[] ParsedLine = line.trim().split("\t");
+            String[] ParsedLine = line.trim().split(" ");
             String queryId = ParsedLine[0];
             int doc_rank = Integer.valueOf(ParsedLine[1]);
             String passage_id = ParsedLine[2];
