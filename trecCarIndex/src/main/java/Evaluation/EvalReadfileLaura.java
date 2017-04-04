@@ -152,7 +152,7 @@ public class EvalReadfileLaura {
 		String line;
 		while ((line =bufferReading.readLine()) != null){		
 //				System.out.println(line);
-			String[] ParsedLine= line.trim().split("\t");
+			String[] ParsedLine= line.trim().split(" ");
 //				System.out.println(ParsedLine);
 			String queryId = ParsedLine[0];
 			int doc_rank = Integer.valueOf(ParsedLine[3]);
