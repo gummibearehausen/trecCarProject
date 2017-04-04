@@ -232,7 +232,7 @@ public class Searcher {
             ArrayList<String> DocRankIdPerQuery = DocRanklistQueries.get(QueryAskey);
             int docRank=1;
             for(String DocParaId:DocRankIdPerQuery){
-                String WriteString =QueryAskey+"\t"+0+"\t"+DocParaId +"\t"+docRank+"\t"+1.0/docRank+"\t"+"BBTeam"+"\n";
+                String WriteString =QueryAskey+" "+0+" "+DocParaId +" "+docRank+" "+1.0/docRank+" "+"BBTeam"+"\n";
                 docRank+=1;
                 writer.write( WriteString);
             }
@@ -246,7 +246,7 @@ public class Searcher {
             ArrayList<String> DocRankIdPerQuery = DocRanklistQueries.get(QueryAskey);
             int docRank=1;
             for(String DocParaId:DocRankIdPerQuery){
-                String WriteString =QueryAskey+"\t"+0+"\t"+DocParaId +"\t"+docRank+"\t"+1.0/docRank+"\t"+"BBTeam"+"\n";
+                String WriteString =QueryAskey+" "+0+" "+DocParaId +" "+docRank+" "+1.0/docRank+" "+"BBTeam"+"\n";
                 docRank+=1;
                 writer.write( WriteString);
             }
