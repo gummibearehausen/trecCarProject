@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import treccarData.Data;
 import treccarReadData.DeserializeData;
@@ -33,21 +34,48 @@ public class Queries {
 	    useFile = true;
 	}
 
+	public static ArrayList<SySQuery> getQueries_( Data.Section section) {
+    if ( section.getChildSections().size() == 0 ) {
+      ArrayList out = new ArrayList<SySQuery>();
+      out.add( new SySQuery(section.getHeading(), section.getHeadingId()));
+      return out;
+    }
+
+    ArrayList<SySQuery> out = new ArrayList<>();
+    for (Data.Section s : section.getChildSections()) {
+      for ( SySQuery q : getQueries_(s) ) {
+        out.add( new SySQuery( section.getHeading() + " " + q.getQueryText(),
+                            section.getHeadingId() + "/" + q.getQueryId()) );
+      }
+    }
+    return out;
+  }
+
+  public static ArrayList<SySQuery> getQueries( File fin ) {
+
+    ArrayList<SySQuery> out = new ArrayList<>();
+
+    try {
+			FileInputStream fstream = new FileInputStream( fin );
+      for (Data.Page p : DeserializeData.iterableAnnotations(fstream)) {
+
+          for (Data.Section s : p.getChildSections()) {
+            for (SySQuery q : getQueries_(s)) {
+              out.add( new SySQuery( p.getPageName() + " " + q.getQueryText(),
+                                  p.getPageId() + "/" + q.getQueryId())) ;
+            }
+          }
+      }
+    } catch (Exception e) {System.err.println(e);}
+      out.stream().parallel().forEach(q ->  { q.expandQuery(); System.err.println(q.getQueryText()); });
+    return out;
+  }
+
 	public ArrayList<SySQuery> readQueries() throws IOException{
-
-		ArrayList<SySQuery> Q= new ArrayList<SySQuery>();
-
-        final FileInputStream fileInputStream;
+		final FileInputStream fstream;
 		if (useFile){
-			fileInputStream = new FileInputStream(this.outlinFile);
-		} else {
-			fileInputStream = new FileInputStream(new File(outlines));
+			return getQueries( this.outlinFile );
 		}
-		for(Data.Page page: DeserializeData.iterableAnnotations(fileInputStream)) {
-			SySQuery q = new SySQuery(page.getPageId(),page.getPageName());
-			Q.add(q);
-		}
-		return Q;
+		return getQueries( new File( outlines ) );
 	}
 }
-

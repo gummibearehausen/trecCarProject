@@ -29,15 +29,18 @@ public class SySQuery {
 
 	}
 
-	public SySQuery(String Q_id, String Q_text){
+	public SySQuery(String Q_text, String Q_id){
 		this.Query_id = Q_id;
 		this.Query_text = Q_text;
 
+	}
+
+	public void expandQuery() {
+		Query_text = Query_text.replaceAll("[/:#]", " ");
 		if ( WORDNET_EXPAND_QUERY )
 			wordnetExpandQuery();
 		if ( KB_EXPAND_QUERY )
 			kbExpandQuery();
-
 	}
 
 	public String getQueryText(){

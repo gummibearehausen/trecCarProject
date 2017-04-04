@@ -21,8 +21,9 @@ public class Experiment {
 
 
 
-        if ( args.length != 4 ) {
-            System.err.println("Required params: <paragraph> <outlines> <qrels> <output>");
+        if ( args.length != 5 ) {
+            System.err.println("Required params: <paragraph> <outlines> <qrels> <output> <methods>");
+            System.err.println("Availible methods: --cluster-only, --cluster-and-kb-expansion, --cluster-and-wordnet-expansion");
             return;
         }
 
@@ -30,6 +31,18 @@ public class Experiment {
         File outlineFile = new File( args[1]);
         File qrelsFile = new File( args[2]);
         File runfile = new File( args[3] );
+
+
+        if ( args[4].equals("--cluster-only") )
+          runmodel = 3;
+        else if ( args[4].equals("--cluster-and-kb-expansion") )
+          runmodel = 5;
+        else if ( args[4].equals("--cluster-and-wordnet-expansion") )
+          runmodel = 4;
+        else {
+          System.err.println("UNKNOWN METHOD");
+          System.err.println("Availible methods: --cluster-only, --cluster-and-kb-expansion, --cluster-and-wordnet-expansion");
+        }
 
         int MeanPrecision_at_k=1000;
         int Precision_at_k=1000;
@@ -56,21 +69,21 @@ public class Experiment {
 
             String file_dir = qrelsFile.getParent();
             String indexPath = "indexfile/";
-            Indexer.indexParas(paragraphFile,indexPath);
+            //Indexer.indexParas(paragraphFile,indexPath);
             Queries Q = new Queries(outlineFile);
             Searcher.searchEngine(Q, qrelsFile, runfile , indexPath, hitsPerPage, file_dir,MeanPrecision_at_k,Precision_at_k,lambda);
         }  else if ( runmodel == 4 ) {
             SySQuery.WORDNET_EXPAND_QUERY = true;
             String file_dir = qrelsFile.getParent();
             String indexPath = "indexfile/";
-            Indexer.indexParas(paragraphFile,indexPath);
+            // Indexer.indexParas(paragraphFile,indexPath);
             Queries Q = new Queries(outlineFile);
             Searcher.searchEngine(Q, qrelsFile, runfile , indexPath, hitsPerPage, file_dir,MeanPrecision_at_k,Precision_at_k,lambda);
         } else {
             SySQuery.KB_EXPAND_QUERY = true;
             String file_dir = qrelsFile.getParent();
             String indexPath = "indexfile/";
-            Indexer.indexParas(paragraphFile,indexPath);
+            // Indexer.indexParas(paragraphFile,indexPath);
             Queries Q = new Queries(outlineFile);
             Searcher.searchEngine(Q, qrelsFile, runfile , indexPath, hitsPerPage, file_dir,MeanPrecision_at_k,Precision_at_k,lambda);
         }
