@@ -69,21 +69,21 @@ public class Experiment {
 
             String file_dir = qrelsFile.getParent();
             String indexPath = "indexfile/";
-            //Indexer.indexParas(paragraphFile,indexPath);
+            Indexer.indexParas(paragraphFile,indexPath);
             Queries Q = new Queries(outlineFile);
             Searcher.searchEngine(Q, qrelsFile, runfile , indexPath, hitsPerPage, file_dir,MeanPrecision_at_k,Precision_at_k,lambda);
         }  else if ( runmodel == 4 ) {
             SySQuery.WORDNET_EXPAND_QUERY = true;
             String file_dir = qrelsFile.getParent();
             String indexPath = "indexfile/";
-            // Indexer.indexParas(paragraphFile,indexPath);
+            Indexer.indexParas(paragraphFile,indexPath);
             Queries Q = new Queries(outlineFile);
             Searcher.searchEngine(Q, qrelsFile, runfile , indexPath, hitsPerPage, file_dir,MeanPrecision_at_k,Precision_at_k,lambda);
         } else {
             SySQuery.KB_EXPAND_QUERY = true;
             String file_dir = qrelsFile.getParent();
             String indexPath = "indexfile/";
-            // Indexer.indexParas(paragraphFile,indexPath);
+            Indexer.indexParas(paragraphFile,indexPath);
             Queries Q = new Queries(outlineFile);
             Searcher.searchEngine(Q, qrelsFile, runfile , indexPath, hitsPerPage, file_dir,MeanPrecision_at_k,Precision_at_k,lambda);
         }
