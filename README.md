@@ -10,7 +10,7 @@ $ cd trecCarIndex
 
 $ mvn package assembly:single
 
-$ java -jar ./target/treccar-archecture-framework-1.4-jar-with-dependencies.jar  *paragraph_DIR* *outlines_DIR* *qrels_DIR* *output_DIR* *method*
+$ java -jar ./target/treccar-archecture-framework-1.4-jar-with-dependencies.jar  *paragraph_DIR* *outlines_DIR* *hierarchical_qrels_DIR* *output_DIR* *method*
 
 Method flags:
 * --cluster-only -> Run the clustering and baseline
