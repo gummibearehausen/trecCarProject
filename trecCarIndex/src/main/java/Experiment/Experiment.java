@@ -46,7 +46,7 @@ public class Experiment {
 
         int MeanPrecision_at_k=1000;
         int Precision_at_k=1000;
-        int hitsPerPage = 1000;
+        int hitsPerPage = 100;
         double lambda = 0.7;
         if(runmodel==1){
             String file_dir ="spritzer-v1/";

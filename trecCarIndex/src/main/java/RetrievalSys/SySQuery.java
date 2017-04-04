@@ -36,11 +36,11 @@ public class SySQuery {
 	}
 
 	public void expandQuery() {
-		Query_text = Query_text.replaceAll("[/:#]", " ");
 		if ( WORDNET_EXPAND_QUERY )
 			wordnetExpandQuery();
 		if ( KB_EXPAND_QUERY )
 			kbExpandQuery();
+		Query_text = Query_text.replaceAll("[/:#]", " ");
 	}
 
 	public String getQueryText(){
@@ -93,9 +93,9 @@ public class SySQuery {
     }
 
     for (String s : terms) {
-      if ( rand.nextDouble() < 0.2 ) {
+      // if ( rand.nextDouble() < 0.2 ) {
         sb.append(s); sb.append(" ");
-      }
+      // }
     }
 
     this.Query_text = sb.toString();
