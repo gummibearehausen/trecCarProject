@@ -133,7 +133,7 @@ public class Searcher {
             System.out.println("retrieval result of BM25 ( k1 = 1.2, b = 0.75):");
             result.printEval();
             System.out.println();
-            System.out.println("retrieval Cluster Ranking: ");
+            System.out.println("new retrieval method result Ranking:");
             result2.printEval();
         }else{
             EvalReadfileLaura result = new EvalReadfileLaura(eval_file_dir,eval_f_name,"runfile_tempResultBM25" ,MAP_at_k,PR_at_k);
@@ -142,7 +142,7 @@ public class Searcher {
             System.out.println("retrieval result of BM25 ( k1 = 1.2, b = 0.75):");
             result.printEval();
             System.out.println();
-            System.out.println("retrieval Cluster Ranking: ");
+            System.out.println("new retrieval method result Ranking: ");
             result2.printEval();
         }
 
