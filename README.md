@@ -10,7 +10,12 @@ $ cd trecCarIndex
 
 $ mvn package assembly:single
 
-$ java -jar ./target/treccar-archecture-framework-1.4-jar-with-dependencies.jar  *paragraph_DIR* *outlines_DIR* *qrels_DIR* *output_DIR*
+$ java -jar ./target/treccar-archecture-framework-1.4-jar-with-dependencies.jar  *paragraph_DIR* *outlines_DIR* *qrels_DIR* *output_DIR* *method*
+
+Method flags:
+* --cluster-only -> Run the clustering and baseline
+* --cluster-and-wordnet-expansion -> Run the cluster and baseline methods with queries expanded via wordnet
+* --cluster-and-kb-expansion -> Run the clustering and baseline method with queries expanded from a homebrewed KB
 
 
 This command index the paragraphs and save them in a local directory:  *indexfile*
