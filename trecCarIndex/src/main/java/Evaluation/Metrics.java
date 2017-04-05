@@ -50,7 +50,6 @@ public class Metrics {
 		double precisionAtR=0.0;
 
 		Set<String> truth_rel = truth.get(query);
-        System.out.println(truth_rel);
 		int num_of_true =  truth_rel.size();
 
 		int num_rel_retr = 0;
