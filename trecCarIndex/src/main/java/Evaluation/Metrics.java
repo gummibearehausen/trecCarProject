@@ -14,20 +14,31 @@ public class Metrics {
 	Map<String, Set<String>>truth;
 	int map_k;
 	int pr_k;
-	int rankLength;	
-
+	int rankLength;
+    Set<String> truth_relevance;
 	ArrayList<ArrayList<Double>> metricOutput;
 	int top_k;
 	int num_rel_ret;
 	public Metrics (ArrayList<String> ranklist, String query, Map<String, Set<String> >truth, int map_k, int pr_k){
 
 		this.ranklist =ranklist;
-		this.truth = truth;	
-		this.result = metric_methods(query,map_k, pr_k);
+		this.truth = truth;
 		this.map_k = map_k;
 		this.pr_k =pr_k;  
-		this.num_rel_ret =0;	
+		this.num_rel_ret =0;
+        this.query=query;
+
+
+
 	}
+	public boolean checkIfQueryInQrel(){
+	    if(truth.containsKey(query)){
+	        return true;
+        }else{
+	        return false;
+        }
+
+    }
 	
 	public  ArrayList<Double> metric_methods(String query, int map_k,int pr_k){
 		ArrayList<Double> eval = new ArrayList<Double>();
@@ -39,8 +50,8 @@ public class Metrics {
 		double precisionAtR=0.0;
 
 		Set<String> truth_rel = truth.get(query);
-		if(truth_rel!=null){
-		int num_of_true =  truth_rel.size();	
+        System.out.println(truth_rel);
+		int num_of_true =  truth_rel.size();
 
 		int num_rel_retr = 0;
 		for (int rank=0; rank< ranklist.size();rank++){	
@@ -72,17 +83,13 @@ public class Metrics {
 		eval.add(recallAtX/num_of_true);
 		eval.add(precisionAtR/num_of_true);
 		eval.add(MRR_a_q);
-		}else{
-			eval.add(0.0);
-            		eval.add(0.0);
-           		eval.add(0.0);
-            		eval.add(0.0);
-		}
+
 		return eval;
 	}
 	
 	public ArrayList<Double> getResult(){
-		return this.result;
+        result = metric_methods(query,map_k, pr_k);
+	    return result;
 	}
 	
 	public  ArrayList <Double> printResult(){
@@ -94,7 +101,8 @@ public class Metrics {
 	}
 	
    public int getNum_rel_retrieve(){
-	   return this.num_rel_ret;
+
+	    return this.num_rel_ret;
    }
 
 }

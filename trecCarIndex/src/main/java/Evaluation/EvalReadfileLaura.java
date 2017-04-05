@@ -58,19 +58,23 @@ public class EvalReadfileLaura {
 		br.close();	
 		ArrayList<Double>ave_eval = new ArrayList<Double>();
 	
-		int num_of_query = ranklistByquery.keySet().size();		
+		int num_of_query = 0;
 		for(String queryId:ranklistByquery.keySet()){			
 			
-						Metrics eval_query = new Metrics(ranklistByquery.get(queryId),queryId, groundtruth,map_at_k,pr_at_k);			
-						ArrayList<Double> query_result =eval_query.getResult();
-						
-						for(int i=0;i<query_result.size(); i++){
-							if(ave_eval.size()< query_result.size()){
+						Metrics eval_query = new Metrics(ranklistByquery.get(queryId),queryId, groundtruth,map_at_k,pr_at_k);
+						boolean checkQueryAvailability =eval_query.checkIfQueryInQrel();
+						if(checkQueryAvailability==true){
+						ArrayList<Double> query_result = eval_query.getResult();
+						num_of_query+=1;
+						for (int i = 0; i < query_result.size(); i++) {
+							if (ave_eval.size() < query_result.size()) {
 								ave_eval.add(query_result.get(i));
-							}else{
-								ave_eval.set(i,ave_eval.get(i)+query_result.get(i));
+							} else {
+								ave_eval.set(i, ave_eval.get(i) + query_result.get(i));
+								}
 							}
 						}
+
 					}
 		for(int j = 0; j< ave_eval.size(); j++){
 			ave_eval.set(j, ave_eval.get(j)/num_of_query);
@@ -110,17 +114,20 @@ public class EvalReadfileLaura {
 		br.close();
 		ArrayList<Double>ave_eval = new ArrayList<Double>();
 
-		int num_of_query = ranklistByquery.keySet().size();
-		for(String queryId:ranklistByquery.keySet()){
+		int num_of_query = 0;
+		for(String queryId:ranklistByquery.keySet()) {
 
-			Metrics eval_query = new Metrics(ranklistByquery.get(queryId),queryId, groundtruth,map_at_k,pr_at_k);
-			ArrayList<Double> query_result =eval_query.getResult();
-
-			for(int i=0;i<query_result.size(); i++){
-				if(ave_eval.size()< query_result.size()){
+			Metrics eval_query = new Metrics(ranklistByquery.get(queryId), queryId, groundtruth, map_at_k, pr_at_k);
+			boolean checkQueryAvailability =eval_query.checkIfQueryInQrel();
+			if(checkQueryAvailability==true){
+			ArrayList<Double> query_result = eval_query.getResult();
+			num_of_query+=1;
+			for (int i = 0; i < query_result.size(); i++) {
+				if (ave_eval.size() < query_result.size()) {
 					ave_eval.add(query_result.get(i));
-				}else{
-					ave_eval.set(i,ave_eval.get(i)+query_result.get(i));
+				} else {
+					ave_eval.set(i, ave_eval.get(i) + query_result.get(i));
+					}
 				}
 			}
 		}
