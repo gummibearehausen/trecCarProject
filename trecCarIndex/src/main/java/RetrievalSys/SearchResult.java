@@ -71,7 +71,7 @@ public class SearchResult {
 	}
 	public void ClusteringResult() throws Exception{
 		String tempIndexPath = "indexcluster/";
-		DMM dmm = new DMM(5,0.1,0.1,2, RankLuceneDoc);
+		DMM dmm = new DMM(20,0.1,0.1,20, RankLuceneDoc);
 //		long startTime = System.currentTimeMillis();
 		dmm.getDocuments();
 //		long endTime = System.currentTimeMillis();
