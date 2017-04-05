@@ -39,6 +39,7 @@ public class Metrics {
 		double precisionAtR=0.0;
 
 		Set<String> truth_rel = truth.get(query);
+		if(truth_rel!=null){
 		int num_of_true =  truth_rel.size();	
 
 		int num_rel_retr = 0;
@@ -71,6 +72,12 @@ public class Metrics {
 		eval.add(recallAtX/num_of_true);
 		eval.add(precisionAtR/num_of_true);
 		eval.add(MRR_a_q);
+		}else{
+			eval.add(0.0);
+            		eval.add(0.0);
+           		eval.add(0.0);
+            		eval.add(0.0);
+		}
 		return eval;
 	}
 	
